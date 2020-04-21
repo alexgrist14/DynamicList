@@ -1,33 +1,50 @@
 import React, {Component} from 'react';
 
-export default class List extends Component{
-    constructor(props: any){
-        super(props);
-        this.state = {};
-        this.getList = this.getList.bind(this);
-    }
+interface ListItem{
+  id: number,
+  name: string,
+  shortInfo: string,
+  more: string,
+}
 
-    componentDidMount(){
-        // this.setState((state)=>{
-        //     return fetch("https://mrsoft.by/tz20/list.json");
-        // });
-    }
+interface ListState {
+  list:ListItem[],
+}
 
-    async getList(){
-        let url = "https://mrsoft.by/tz20/list.json";
-        const requestOptions = {
-            headers: {    
-                'Access-Control-Allow-Origin': 'https://mrsoft.by/tz20/list.json' }};
+export default class List extends Component<any, ListState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {list: []};
+    this.getList = this.getList.bind(this);
+  }
 
-        let response = await fetch(url,
-            requestOptions
-        );
-        console.log(response.text());
-    }
+  async componentDidMount() {
+    let api = "https://cors-anywhere.herokuapp.com/";
+    let url = "mrsoft.by/tz20/list.json";
+    let response = await fetch(api + url);
+    let json = {};
 
-    render(){
-        return(
-            <button onClick={() => this.getList()}>click</button>
-        )
+    if (response.ok) {
+      json = await response.json();
+      this.setState({list: json});
+    } else {
+      alert("Error HTTP: " + response.status);
     }
+    console.log(this.state.list.data[0].name);
+  }
+
+  async getList() {
+
+
+  }
+
+  render() {
+    return (
+        <div className="list-container">
+          {
+            this.
+          }
+        </div>
+    )
+  }
 }

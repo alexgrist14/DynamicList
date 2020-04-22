@@ -17,18 +17,21 @@ interface ListState {
   list: ListItem[],
 }
 
-export default class List extends Component<any, ListState> {
+interface Props {
+  getInfo: (name:string,shortInfo: string,more:string,bio:string,image:string) =>void,
+}
+
+export default class List extends Component<Props, ListState> {
   constructor(props: any) {
     super(props);
     this.state = { list: [] };
-    this.getList = this.getList.bind(this);
   }
 
   async componentDidMount() {
     let api = 'https://cors-anywhere.herokuapp.com/';
     let url = 'mrsoft.by/tz20/list.json';
 
-    await fetch(api + url)
+    fetch(api + url)
       .then<ApiResponse>(response => {
         if (!response.ok) {
           throw new Error(response.statusText);
@@ -41,19 +44,20 @@ export default class List extends Component<any, ListState> {
     setTimeout(()=>{ console.log(this.state.list[0].name);},1000);
   }
 
-  async getList() {
-
-  }
-
   render() {
     return (
       <div className="list-container">
         {
           this.state.list.map((item)=>
-            <Item key={item.id} id={item.id} name={item.name} shortInfo={item.shortInfo} more={item.more}/>
+            <Item key={item.id}
+                  id={item.id}
+                  name={item.name}
+                  shortInfo={item.shortInfo}
+                  more={item.more}
+                  getInfo={this.props.getInfo}
+            />
           )
         }
-
       </div>
     )
   }

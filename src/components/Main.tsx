@@ -22,17 +22,20 @@ export default class Main extends Component<any,MainState> {
   }
 
   render() {
+    const image = this.state.image;
     return (
-      <>
+      <div className="content">
         <List getInfo={this.getInfo}/>
-        <Info
+        {image!=="" &&
+          <Info
           name={this.state.name}
           shortInfo={this.state.shortInfo}
           more={this.state.more}
           bio={this.state.bio}
           image={this.state.image}
-        />
-      </>
+          />
+        }
+      </div>
     )
   }
 }

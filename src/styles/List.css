@@ -27,9 +27,21 @@ body{
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 20px;
+    transition: .5s;
+}
+.list-item:hover{
+    background-color: #d8deee;
+    transition: .5s;
 }
 
+.list-item:active{
+    background-color: #4a5cf3;
+    transition: .5s;
+}
+
+
 .item-content{
+    position: relative;
     padding-left: 30px;
     color: #3ea4dc;
 }
@@ -37,10 +49,9 @@ body{
     font-weight: bolder;
     color: #155872;
 }
+
 .info-container{
-    position: absolute;
-    left: 25vw;
-    top: 30px;
+    margin-left: 150px;
     color: #3ea4dc;
 }
 .info-container h2{
@@ -48,4 +59,48 @@ body{
 }
 .bio{
     width: 300px;
+}
+
+.disabled-list-item{
+    pointer-events: none;
+    border: 1.5px #909393 solid;
+}
+
+.disabled-list-item .item-content{
+    color: #909393;
+}
+
+.disabled-list-item h2{
+    color: #909393;
+}
+
+
+.content{
+    display: flex;
+}
+.delete-btn{
+    position: absolute;
+    right: 10px;
+    top: -15px;
+    width: 26px;
+    height: 26px;
+}
+.invise-btn{
+    display: none;
+}
+.restore-btn{
+    position: absolute;
+    cursor: default;
+    pointer-events: fill;
+    right: 10px;
+    top: -15px;
+    font-size: 24px;
+    color: #cd2020;
+    transition: .5s;
+}
+
+.restore-btn:hover{
+    font-size: 32px;
+    color: #c70505;
+    transition: .5s;
 }

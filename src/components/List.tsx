@@ -17,6 +17,8 @@ interface ApiResponse {
 interface ListState {
   list: ListItem[],
   deletedList: ListItem[],
+  searchList: ListItem[],
+  searchValue: string,
 }
 
 interface Props {
@@ -26,9 +28,10 @@ interface Props {
 export default class List extends Component<Props, ListState> {
   constructor(props: any) {
     super(props);
-    this.state = {list: [], deletedList: []};
+    this.state = {list: [], deletedList: [], searchList: [], searchValue: ''};
     this.deleteItem = this.deleteItem.bind(this);
     this.restoreItem = this.restoreItem.bind(this);
+    this.findItem = this.findItem.bind(this);
   }
 
   async componentDidMount() {
@@ -46,6 +49,7 @@ export default class List extends Component<Props, ListState> {
       .catch(error => alert('Error HTTP: ' + error.message));
   }
 
+  //исправить копипасту
   deleteItem(elem: any) {
     const deletedItemId = elem.target.parentNode.id;
     const deletedItem = this.state.list.filter(item => item.id === +deletedItemId);
@@ -63,7 +67,8 @@ export default class List extends Component<Props, ListState> {
     this.setState({list: newList, deletedList: deletedList});
   }
 
-  restoreItem(elem:any){
+  //исправить копипасту
+  restoreItem(elem: any) {
     const restoredItemId = elem.target.parentNode.id;
     const restoredItem = this.state.deletedList.filter(item => item.id === +restoredItemId);
     const item =
@@ -80,10 +85,35 @@ export default class List extends Component<Props, ListState> {
     this.setState({list: restoredList, deletedList: newDeletedList});
   }
 
+  //SyntheticEvent не работает
+  findItem(event: any) {
+    const searchItem = event.target.value;
+    const newList = this.state.list.filter((item) => item.name.toLowerCase().includes(searchItem.toLowerCase()));
+
+    this.setState({searchList: newList, searchValue: searchItem});
+  }
+
   render() {
+    const searchValue = this.state.searchValue;
+
     return (
-      <div className="list-container">
-        {
+      <>
+        <input className="search-box" type="text" placeholder="Input name to find items" onInput={this.findItem}/>
+        <div className="list-container">
+          {searchValue !== '' &&
+          this.state.searchList.map((item) =>
+            <Item key={item.id}
+                  id={item.id}
+                  name={item.name}
+                  shortInfo={item.shortInfo}
+                  more={item.more}
+                  getInfo={this.props.getInfo}
+                  deleteItem={this.deleteItem}
+                  disabled={false}
+                  restoreItem={this.restoreItem}/>
+          )
+          }
+          {searchValue === '' &&
           this.state.list.map((item) =>
             <Item key={item.id}
                   id={item.id}
@@ -95,8 +125,8 @@ export default class List extends Component<Props, ListState> {
                   disabled={false}
                   restoreItem={this.restoreItem}/>
           )
-        }
-        {
+          }
+          {searchValue === '' &&
           this.state.deletedList.map((deletedItem) =>
             <Item key={deletedItem.id}
                   id={deletedItem.id}
@@ -108,8 +138,9 @@ export default class List extends Component<Props, ListState> {
                   disabled={true}
                   restoreItem={this.restoreItem}/>
           )
-        }
-      </div>
+          }
+        </div>
+      </>
     )
   }
 }

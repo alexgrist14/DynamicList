@@ -7,9 +7,9 @@ interface ItemProps {
   shortInfo: string,
   more: string,
   getInfo: (name: string, shortInfo: string, more: string, bio: string, image: string) => void,
-  deleteItem:(elem:any)=>void,
-  restoreItem:(elem:any)=>void,
-  disabled:boolean,
+  deleteItem: (elem: any) => void,
+  restoreItem: (elem: any) => void,
+  disabled: boolean,
 }
 
 interface ApiResponse {
@@ -22,10 +22,6 @@ export default class Item extends Component<ItemProps> {
   constructor(props: ItemProps) {
     super(props);
     this.clickHandler = this.clickHandler.bind(this);
-  }
-
-  componentDidMount(): void {
-
   }
 
   async clickHandler() {
@@ -45,12 +41,14 @@ export default class Item extends Component<ItemProps> {
 
   render() {
     return (
-      <div className= {`list-item${this.props.disabled?' disabled-list-item':""}`}  onClick={this.clickHandler}>
+      <div className={`list-item${this.props.disabled ? ' disabled-list-item' : ""}`} onClick={this.clickHandler}>
         <div className="item-content" id={this.props.id.toString()}>
           <h2>{this.props.name}</h2>
           <p>{this.props.shortInfo}</p>
-          <img onClick={this.props.deleteItem} className={`delete-btn${this.props.disabled?' invise-btn':''}`} src={CloseButton} alt="delete button"/>
-          <span onClick={this.props.restoreItem} className={this.props.disabled?'restore-btn':'invise-btn'}>R</span>
+          <img onClick={this.props.deleteItem} className={`delete-btn${this.props.disabled ? ' invisible-btn' : ''}`}
+               src={CloseButton} alt="delete button"/>
+          <span onClick={this.props.restoreItem}
+                className={this.props.disabled ? 'restore-btn' : 'invisible-btn'}>R</span>
         </div>
       </div>
     );

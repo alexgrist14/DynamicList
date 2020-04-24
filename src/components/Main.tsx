@@ -3,22 +3,22 @@ import List from './List';
 import Info from "./Info";
 
 interface MainState {
-  name:string,
+  name: string,
   shortInfo: string,
   more: string,
-  bio:string,
-  image:string
+  bio: string,
+  image: string
 }
 
-export default class Main extends Component<any,MainState> {
+export default class Main extends Component<any, MainState> {
   constructor(props: any) {
     super(props);
-    this.state = {name:"",shortInfo:"",more:"",bio:"",image:""};
+    this.state = {name: "", shortInfo: "", more: "", bio: "", image: ""};
     this.getInfo = this.getInfo.bind(this);
   }
 
-  getInfo(nam:string,sInfo: string,mr:string,bi:string,img:string) {
-    this.setState({name:nam, shortInfo:sInfo,more:mr,bio:bi,image:img});
+  getInfo(nam: string, sInfo: string, mr: string, bi: string, img: string) {
+    this.setState({name: nam, shortInfo: sInfo, more: mr, bio: bi, image: img});
   }
 
   render() {
@@ -26,17 +26,16 @@ export default class Main extends Component<any,MainState> {
     return (
       <div className="content">
         <List getInfo={this.getInfo}/>
-        {image!=="" &&
-          <Info
-          name={this.state.name}
-          shortInfo={this.state.shortInfo}
-          more={this.state.more}
-          bio={this.state.bio}
-          image={this.state.image}
-          />
+        {image !== "" &&
+        <Info
+            name={this.state.name}
+            shortInfo={this.state.shortInfo}
+            more={this.state.more}
+            bio={this.state.bio}
+            image={this.state.image}
+        />
         }
       </div>
     )
   }
 }
-

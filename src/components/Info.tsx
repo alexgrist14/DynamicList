@@ -1,14 +1,7 @@
 import React, {Component} from 'react';
+import { CatFullInfo } from '../models/cat.model'
 
-interface InfoProps {
-  name: string,
-  shortInfo: string,
-  more: string,
-  bio: string,
-  image: string
-}
-
-export default class Info extends Component<InfoProps> {
+export default class Info extends Component<CatFullInfo> {
   render() {
     return (
       <div className="info-container">

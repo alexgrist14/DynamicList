@@ -38,8 +38,10 @@ body {
 }
 
 .list-item {
+    display: flex;
+    justify-content: space-between;
     border: 1.5px #3ea4dc solid;
-    height: 90px;
+    padding: 10px;
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 20px;
@@ -56,19 +58,15 @@ body {
     transition: .5s;
 }
 
-
-.item-content {
-    position: relative;
-    padding-left: 30px;
-    color: #3ea4dc;
-}
-
-.item-content h2 {
+.list-item-title h2 {
     font-weight: bolder;
     margin: 0;
     padding: 0;
-    margin-top: 10px;
     color: #155872;
+}
+
+.list-item-title p {
+    /*margin: 0;*/
 }
 
 .info-container {
@@ -103,9 +101,6 @@ body {
 }
 
 .delete-btn {
-    position: absolute;
-    right: 10px;
-    top: -5px;
     width: 26px;
     height: 26px;
 }
@@ -115,11 +110,8 @@ body {
 }
 
 .restore-btn {
-    position: absolute;
     cursor: default;
     pointer-events: fill;
-    right: 10px;
-    top: -5px;
     font-size: 24px;
     color: #cd2020;
     transition: .5s;

@@ -1,55 +1,55 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import CloseButton from '../assets/close.png';
+import { Cat, CatFullInfo } from '../models/cat.model';
+import { CatApiMoreInfo, getMoreCatInfo } from '../utils/cat-management-utils';
 
 interface ItemProps {
-  id: number,
-  name: string,
-  shortInfo: string,
-  more: string,
-  getInfo: (name: string, shortInfo: string, more: string, bio: string, image: string) => void,
-  deleteItem: (elem: any) => void,
-  restoreItem: (elem: any) => void,
-  disabled: boolean,
-}
-
-interface ApiResponse {
-  id: number,
-  bio: string,
-  pic: string,
+  catElement: Cat,
+  updateInfo: (catInfo: CatFullInfo) => void,
+  toggleItemDisable: (id: number) => void,
 }
 
 export default class Item extends Component<ItemProps> {
   constructor(props: ItemProps) {
     super(props);
-    this.clickHandler = this.clickHandler.bind(this);
+    this.updateInfo = this.updateInfo.bind(this);
   }
 
-  async clickHandler() {
-    let api = 'https://cors-anywhere.herokuapp.com/';
-    let url = 'mrsoft.by/tz20';
-    let moreUrl = api + url + this.props.more;
-    let json = await fetch(moreUrl)
-      .then<ApiResponse>(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      });
+  private updateInfo(): void {
+    getMoreCatInfo(this.props.catElement.more)
+      .then(this.createCatFullInfo)
+      .then(this.props.updateInfo);
+  }
 
-    this.props.getInfo(this.props.name, this.props.shortInfo, this.props.more, json.bio, json.pic);
+  private createCatFullInfo = (moreInfo: CatApiMoreInfo): CatFullInfo => {
+    return {
+      name: this.props.catElement.name,
+      shortInfo: this.props.catElement.shortInfo,
+      more: this.props.catElement.more,
+      bio: moreInfo.bio,
+      image: moreInfo.pic,
+    };
+  }
+
+  private toggleItemDisable = (event: React.MouseEvent): void => {
+    event.stopPropagation();
+    this.props.toggleItemDisable(this.props.catElement.id);
   }
 
   render() {
+    const cat = this.props.catElement;
+
     return (
-      <div className={`list-item${this.props.disabled ? ' disabled-list-item' : ""}`} onClick={this.clickHandler}>
-        <div className="item-content" id={this.props.id.toString()}>
-          <h2>{this.props.name}</h2>
-          <p>{this.props.shortInfo}</p>
-          <img onClick={this.props.deleteItem} className={`delete-btn${this.props.disabled ? ' invisible-btn' : ''}`}
-               src={CloseButton} alt="delete button"/>
-          <span onClick={this.props.restoreItem}
-                className={this.props.disabled ? 'restore-btn' : 'invisible-btn'}>R</span>
+      <div className={ `list-item${ cat.disabled ? ' disabled-list-item' : '' }` } onClick={ this.updateInfo }>
+        <div className="list-item-title">
+          <h2>{ cat.name }</h2>
+          <p>{ cat.shortInfo }</p>
         </div>
+          {
+            cat.disabled
+              ? <span onClick={ this.toggleItemDisable } className='restore-btn'>R</span>
+              : <img onClick={ this.toggleItemDisable } className='delete-btn' src={ CloseButton } alt="delete button"/>
+          }
       </div>
     );
   }

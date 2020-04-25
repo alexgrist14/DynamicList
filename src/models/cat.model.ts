@@ -6,6 +6,7 @@ export interface Cat {
   shortInfo: string,
   more: string,
   disabled: boolean,
+  lastEditTime: Date,
 }
 
 export interface CatFullInfo {
@@ -23,5 +24,6 @@ export function createCatFromDto(catData: CatApiData): Cat {
     shortInfo: catData.shortInfo,
     more: catData.more,
     disabled: false,
+    lastEditTime: new Date(),
   }
 }

@@ -44,6 +44,9 @@ export default class Item extends Component<ItemProps> {
         <div className="list-item-title">
           <h2>{ cat.name }</h2>
           <p>{ cat.shortInfo }</p>
+          { cat.disabled &&
+            <p>{cat.lastEditTime.toLocaleString()}</p>
+          }
         </div>
           {
             cat.disabled
